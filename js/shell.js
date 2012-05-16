@@ -88,7 +88,7 @@ $(function () {
 			console.log (res.data.headers);
 
 			$('#response-headers').html ('HTTP/1.1 ' + res.data.status + ' ' + shell.statuses[res.data.status]);
-			$('#response-body').html (JSON.stringify (JSON.parse (res.data.body), undefined, "\t"));
+			$('#response-body').html (JSON.stringify (JSON.parse (res.data.body), undefined, 4));
 		});
 
 		return false;
