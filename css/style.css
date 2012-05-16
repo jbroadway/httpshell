@@ -4,8 +4,36 @@
 .status { color: #CA8A04; }
 .header-name { color: #006AEB; }
 .header-value { color: green; }
-.string { color: green; }
 .number { color: #CA8A04; }
 .boolean { color: #CA8A04; }
 .null { color: #CA8A04; }
 .key { color: #006AEB; }
+.string { color: green; }
+.comment { color: #666 !important; }
+
+#response-headers, #response-body {
+	overflow-x: auto;
+}
+
+.syntax-container, .syntax {
+	background-color: inherit !important;
+	border: 0 !important;
+	font-size: inherit !important;
+	font-family: monospace !important;
+}
+.xml-tag, .tag-name, .cdata-tag, .cdata {
+	color: #7A0968 !important;
+	font-weight: normal !important;
+}
+.keyword {
+	color: #CA8A04 !important;
+}
+.type {
+	color: #006AEB !important;
+}
+.syntax .string, .function, .selector {
+	color: #006AEB !important;
+}
+.javascript .string, .css .property {
+	color: green !important;
+}

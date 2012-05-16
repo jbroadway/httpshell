@@ -47,6 +47,9 @@ var shell = {
 		509: 'Bandwidth Limit Exceeded'
 	},
 
+	// jquery-syntax root
+	syntax_root: '/apps/httpshell/js/jquery-syntax/',
+
 	// history of commands
 	history: [],
 	
@@ -107,7 +110,6 @@ $(function () {
 		$('#response-body').html ('');
 
 		$.post ('/httpshell/request/send', data, function (res) {
-			console.log (res);
 			if (! res.success) {
 				$('#response-headers').html ('Error: ' + res.error);
 				return false;
@@ -127,7 +129,8 @@ $(function () {
 			if (content_type === 'application/json') {
 				$('#response-body').html (shell.highlight (JSON.stringify (JSON.parse (res.data.body), undefined, 4)));
 			} else {
-				$('#response-body').html (shell.htmlentities (res.data.body));
+				$('#response-body').html ('<code class="brush-html">' + shell.htmlentities (res.data.body) + '</code>');
+				$.syntax ({root: shell.syntax_root, blockSelector: 'pre>code', blockLayout: 'plain'});
 			}
 		});
 
