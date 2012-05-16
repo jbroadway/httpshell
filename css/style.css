@@ -1,7 +1,11 @@
-#url {
-	width: 100%;
-}
+#url { width: 100%; }
+#method { width: 40%; }
 
-#method {
-	width: 40%;
-}
+.status { color: #CA8A04; }
+.header-name { color: #006AEB; }
+.header-value { color: green; }
+.string { color: green; }
+.number { color: #CA8A04; }
+.boolean { color: #CA8A04; }
+.null { color: #CA8A04; }
+.key { color: #006AEB; }

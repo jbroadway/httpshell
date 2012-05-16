@@ -53,6 +53,34 @@ var shell = {
 	// add to history of commands
 	add_to_history: function (elements) {
 		shell.history.push (elements);
+	},
+
+	// from: http://stackoverflow.com/a/7220510/1092725
+	highlight: function (json) {
+		json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+			var cls = 'number';
+			if (/^"/.test(match)) {
+				if (/:$/.test(match)) {
+					cls = 'key';
+				} else {
+					cls = 'string';
+				}
+			} else if (/true|false/.test(match)) {
+				cls = 'boolean';
+			} else if (/null/.test(match)) {
+				cls = 'null';
+			}
+			return '<span class="' + cls + '">' + match + '</span>';
+		});
+	},
+	
+	htmlentities: function (html) {
+		return html
+			.replace (/&/g, '&amp;')
+			.replace (/</g, '&lt;')
+			.replace (/>/g, '&gt;')
+			.replace (/"/g, '&quot;');
 	}
 };
 
@@ -85,10 +113,22 @@ $(function () {
 				return false;
 			}
 
-			console.log (res.data.headers);
+			var headers = '<span class="status">HTTP/1.1 ' + res.data.status + ' ' + shell.statuses[res.data.status] + '</span>',
+				content_type = 'text/html';
+			for (var i in res.data.headers) {
+				if (i === 'content-type') {
+					content_type = res.data.headers[i];
+				}
+				headers += "\n<span class=\"header-name\">" + i + ':</span> <span class="header-value">' + res.data.headers[i] + '</span>';
+			}
 
-			$('#response-headers').html ('HTTP/1.1 ' + res.data.status + ' ' + shell.statuses[res.data.status]);
-			$('#response-body').html (JSON.stringify (JSON.parse (res.data.body), undefined, 4));
+			$('#response-headers').html (headers);
+			
+			if (content_type === 'application/json') {
+				$('#response-body').html (shell.highlight (JSON.stringify (JSON.parse (res.data.body), undefined, 4)));
+			} else {
+				$('#response-body').html (shell.htmlentities (res.data.body));
+			}
 		});
 
 		return false;

@@ -87,9 +87,14 @@ class API extends \Restful {
 			return $this->error ('Request failed');
 		}
 
+		$headers = array ();
+		foreach ($res->headers as $name => $value) {
+			$headers[$name] = $value;
+		}
+
 		$out = array (
 			'status' => $res->status_code,
-			'headers' => $res->headers,
+			'headers' => $headers,
 			'body' => $res->body
 		);
 		return $out;
