@@ -58,7 +58,7 @@ var shell = {
 		shell.history.push (elements);
 	},
 
-	// from: http://stackoverflow.com/a/7220510/1092725
+	// highlight json syntax, from: http://stackoverflow.com/a/7220510/1092725
 	highlight: function (json) {
 		json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
@@ -78,6 +78,7 @@ var shell = {
 		});
 	},
 	
+	// escape html entities for output
 	htmlentities: function (html) {
 		return html
 			.replace (/&/g, '&amp;')
@@ -88,8 +89,41 @@ var shell = {
 };
 
 $(function () {
+	// focus url on load
 	$('#url').focus ();
 
+	// show raw post body input
+	$('#set-body').click (function () {
+		$('#post-body').show ();
+	});
+
+	// add a header row
+	$('#add-header').click (function () {
+		$('#headers').append ('<p><input type="text" class="header-name" placeholder="name" /> <input type="text" class="header-value" placeholder="value" /></p>');
+	});
+
+	// clear the form to its original state
+	$('#clear').click (function () {
+		$('#url').val ('');
+		$('#method').val ('get');
+		$('#post-body').val ('');
+		$('#params').html ('<p><input type="text" class="param-name" placeholder="name" /> <input type="text" class="param-value" placeholder="value" /></p>');
+		$('#headers').html ('');
+		$('#post-options').hide ();
+		return false;
+	});
+
+	// change http methods
+	$('#method').change (function () {
+		var method = $(this).val ();
+		if (method === 'post' || method === 'put' || method === 'patch') {
+			$('#post-options').show ();
+		} else {
+			$('#post-options').hide ();
+		}
+	});
+
+	// submit the request
 	$('#shell').submit (function () {
 		var data = {
 			url: '',
@@ -101,22 +135,29 @@ $(function () {
 			headers: {}
 		};
 
+		// add to history
 		shell.add_to_history (this.elements);
 
+		// build the request data
 		data.url = $('#url').val ();
 		data.method = $('#method').val ();
+		data.body = $('#post-body').val ();
 
+		// reset response fields
 		$('#response-headers').html ('Please wait...');
 		$('#response-body').html ('');
 
+		// send the request
 		$.post ('/httpshell/request/send', data, function (res) {
 			if (! res.success) {
 				$('#response-headers').html ('Error: ' + res.error);
 				return false;
 			}
 
+			// build the response headers
 			var headers = '<span class="status">HTTP/1.1 ' + res.data.status + ' ' + shell.statuses[res.data.status] + '</span>',
 				content_type = 'text/html';
+
 			for (var i in res.data.headers) {
 				if (i === 'content-type') {
 					content_type = res.data.headers[i];
@@ -124,14 +165,19 @@ $(function () {
 				headers += "\n<span class=\"header-name\">" + i + ':</span> <span class="header-value">' + res.data.headers[i] + '</span>';
 			}
 
+			// show the headers
 			$('#response-headers').html (headers);
-			
+
+			// show the response body
 			if (content_type === 'application/json') {
 				$('#response-body').html (shell.highlight (JSON.stringify (JSON.parse (res.data.body), undefined, 4)));
 			} else {
 				$('#response-body').html ('<code class="brush-html">' + shell.htmlentities (res.data.body) + '</code>');
 				$.syntax ({root: shell.syntax_root, blockSelector: 'pre>code', blockLayout: 'plain'});
 			}
+			
+			// scroll to the response
+			$('#response')[0].scrollIntoView (true);
 		});
 
 		return false;

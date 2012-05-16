@@ -1,5 +1,11 @@
+input[type=text] { height: 20px; }
 #url { width: 100%; }
 #method { width: 40%; }
+#post-options { display: none; }
+#post-body { width: 100%; height: 200px; display: none; }
+#post-options, #header-list { margin-bottom: 20px; }
+#headers p, #params p { margin: 5px 0px 0px 0px; padding: 0px; }
+#headers input, #params input { width: 46%; }
 
 .status { color: #CA8A04; }
 .header-name { color: #006AEB; }

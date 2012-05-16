@@ -75,6 +75,12 @@ class API extends \Restful {
 			$options['auth']['password'] = $_POST['pass'];
 		}
 
+		if (isset ($_POST['body']) && ! empty ($_POST['body'])) {
+			$data = $_POST['body'];
+		} else {
+			$data = $_POST['params'];
+		}
+
 		$res = Requests::request (
 			$_POST['url'],
 			$headers,
