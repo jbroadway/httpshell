@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Creates the Http Shell user interface.
+ */
+
 $this->require_admin ();
 
 $page->layout = 'admin';

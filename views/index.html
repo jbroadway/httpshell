@@ -1,4 +1,5 @@
 <div class="form">
+
 <form id="shell">
 
 <p><input type="text" id="url" placeholder="{"URL"}" /></p>
@@ -8,17 +9,19 @@
 	<option value="get">HEAD</option>
 	<option value="get">POST</option>
 	<option value="get">PUT</option>
+	<option value="get">PATCH</option>
 	<option value="get">DELETE</option>
-	<option value="get">TRACE</option>
-	<option value="get">OPTIONS</option>
 </select></p>
 
 <p><input type="submit" value="{"Send"}" /></p>
 
 </form>
 
-<div id="headers"></div>
+<h3>Response</h3>
 
-<div id="body"></div>
+<pre id="response-headers">
+</pre>
+
+<pre id="response-body"></pre>
 
 </div>
