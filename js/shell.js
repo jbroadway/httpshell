@@ -85,6 +85,12 @@ var shell = {
 			.replace (/</g, '&lt;')
 			.replace (/>/g, '&gt;')
 			.replace (/"/g, '&quot;');
+	},
+
+	// delete a name/value pair
+	delete_row: function (el) {
+		$(el).parent ().remove ();
+		return false;
 	}
 };
 
@@ -94,12 +100,21 @@ $(function () {
 
 	// show raw post body input
 	$('#set-body').click (function () {
+		$('#params').html ('').hide ();
 		$('#post-body').show ();
+	});
+
+	// add post parameter
+	$('#add-param').click (function () {
+		$('#post-body').val ('').hide ();
+		$('#params').show ();
+		$('#params').append ('<p><input type="text" class="param-name" placeholder="name" /> <input type="text" class="param-value" placeholder="value" /> <a href="#" class="delete-row" onclick="return shell.delete_row (this)">x</a></p>');
 	});
 
 	// add a header row
 	$('#add-header').click (function () {
-		$('#headers').append ('<p><input type="text" class="header-name" placeholder="name" /> <input type="text" class="header-value" placeholder="value" /></p>');
+		$('#headers').append ('<p><input type="text" class="header-name" placeholder="name" /> <input type="text" class="header-value" placeholder="value" /> <a href="#" class="delete-row" onclick="return shell.delete_row (this)">x</a></p>');
+		$('.delete-row').click (shell.delete_row);
 	});
 
 	// clear the form to its original state
@@ -107,7 +122,7 @@ $(function () {
 		$('#url').val ('');
 		$('#method').val ('get');
 		$('#post-body').val ('');
-		$('#params').html ('<p><input type="text" class="param-name" placeholder="name" /> <input type="text" class="param-value" placeholder="value" /></p>');
+		$('#params').html ('<p><input type="text" class="param-name" placeholder="name" /> <input type="text" class="param-value" placeholder="value" /> <a href="#" class="delete-row" onclick="return shell.delete_row (this)">x</a></p>');
 		$('#headers').html ('');
 		$('#post-options').hide ();
 		return false;
@@ -142,6 +157,18 @@ $(function () {
 		data.url = $('#url').val ();
 		data.method = $('#method').val ();
 		data.body = $('#post-body').val ();
+
+		params_name = $('.param-name');
+		params_value = $('.param-value');
+		for (var i = 0; i < params_name.length; i++) {
+			data.params[params_name[i].value] = params_value[i].value;
+		}
+
+		headers_name = $('.header-name');
+		headers_value = $('.header-value');
+		for (var i = 0; i < headers_name.length; i++) {
+			data.headers[headers_name[i].value] = headers_value[i].value;
+		}
 
 		// reset response fields
 		$('#response-headers').html ('Please wait...');

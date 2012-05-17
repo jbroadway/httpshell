@@ -17,7 +17,11 @@
 	<a href="#" id="add-param">{"Add param"}</a> &nbsp;|&nbsp;
 	<a href="#" id="set-body">{"Set body"}</a><br />
 	<div id="params">
-		<p><input type="text" class="param-name" placeholder="name" /> <input type="text" class="param-value" placeholder="value" /></p>
+		<p>
+			<input type="text" class="param-name" placeholder="name" />
+			<input type="text" class="param-value" placeholder="value" />
+			<a href="#" class="delete-row" onclick="return shell.delete_row (this)">x</a>
+		</p>
 	</div>
 	<textarea id="post-body"></textarea>
 </div>

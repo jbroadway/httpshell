@@ -32,6 +32,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		break;
 }
 
+$out['headers'] = array ();
+foreach ($_SERVER as $key => $value) {
+	if (substr ($key, 0, 5) === 'HTTP_') {
+		$key = str_replace (' ', '-', strtolower (str_replace ('_', ' ', substr ($key, 5))));
+		$out['headers'][$key] = $value;
+	}
+}
+
 echo json_encode ($out);
 
 ?>

@@ -8,8 +8,8 @@ input[type=text] { height: 20px; }
 #headers input, #params input { width: 46%; }
 
 .status { color: #CA8A04; }
-.header-name { color: #006AEB; }
-.header-value { color: green; }
+span.header-name { color: #006AEB; }
+span.header-value { color: green; }
 .number { color: #CA8A04; }
 .boolean { color: #CA8A04; }
 .null { color: #CA8A04; }
