@@ -5,3 +5,7 @@ Http Shell is an HTTP testing and debugging tool for the
 an interface through the Elefant admin area for building
 HTTP requests (GET, POST, PUT, DELETE, etc) and seeing
 the response output.
+
+Here is a screenshot of the app:
+
+![](http://github.com/jbroadway/httpshell/raw/master/screenshot.png)

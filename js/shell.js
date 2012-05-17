@@ -135,6 +135,8 @@ $(function () {
 			$('#post-options').show ();
 		} else {
 			$('#post-options').hide ();
+			$('#params').html ('');
+			$('#post-body').val ('');
 		}
 	});
 
