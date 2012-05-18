@@ -81,13 +81,17 @@ class API extends \Restful {
 			$data = $_POST['params'];
 		}
 
-		$res = Requests::request (
-			$_POST['url'],
-			$headers,
-			$data,
-			$type,
-			$options
-		);
+		try {
+			$res = Requests::request (
+				$_POST['url'],
+				$headers,
+				$data,
+				$type,
+				$options
+			);
+		} catch (\Exception $e) {
+			return $this->error ($e->getMessage ());
+		}
 
 		if (! $res->success) {
 			return $this->error ('Request failed');
